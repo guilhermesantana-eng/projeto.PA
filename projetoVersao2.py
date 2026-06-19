@@ -92,32 +92,32 @@ Label(funcionalidades, text="Escolha a Forma:").grid(row=0, column=0, sticky=E, 
 forma_var = StringVar(janela)
 forma_var.set("Retângulo")  # opção inicial
 menu_formas = OptionMenu(funcionalidades, forma_var, "Retângulo", "Oval", "Círculo", "Linha")
-menu_formas.grid(row=0, column=1, sticky=W, padx=5, pady=5)
+menu_formas.grid(row=0, column=1, sticky=W, padx=(5,15), pady=5)
 
 
 # --- MENU DA COR DA BORDA ---
-Label(funcionalidades, text="Cor da Borda:").grid(row=1, column=0, sticky=E, padx=5, pady=5)
+Label(funcionalidades, text="Cor da Borda:").grid(row=0, column=2, sticky=E, padx=(15,5), pady=5)
 
 borda_var = StringVar(janela)
 borda_var.set("black")      # cor inicial 
 
 # BOTÃO PARA COR
-botaoBorda = Button(funcionalidades, text = "Selecionar Cor da Borda:", command= lambda: escolher_cor(borda_var))
-botaoBorda.grid(row = 1, column= 1, sticky= W, padx= 5, pady= 5)
+botaoBorda = Button(funcionalidades, text = "Selecionar Cor da Borda", command= lambda: escolher_cor(borda_var))
+botaoBorda.grid(row = 0, column= 3, sticky= W, padx= (5,15), pady= 5)
 
 # --- MNENU DA COR DE PREENCHIMENTO ---
-Label(funcionalidades, text="Cor de Preenchimento:").grid(row=2, column=0, sticky=E, padx=5, pady=5)
+Label(funcionalidades, text="Cor de Preenchimento:").grid(row=0, column=4, sticky=E, padx=(15,5), pady=5)
 
 preencher_var = StringVar(janela)
 preencher_var.set("white")  # cor inicial
 
 # BOTÃO PARA COR
-botaoPreench = Button(funcionalidades, text = "Selecionar cor do preenchimento:", command= lambda: escolher_cor(preencher_var))
-botaoPreench.grid(row = 2, column= 1, sticky= W, padx= 5, pady= 5)
+botaoPreench = Button(funcionalidades, text = "Selecionar cor do preenchimento", command= lambda: escolher_cor(preencher_var))
+botaoPreench.grid(row = 0, column= 5, sticky= W, padx= (5,15), pady= 5)
 
 # --- BOTÃO DE APAGAR TUDO ---
 botaoApagar = Button(funcionalidades, text="Apagar Tudo", command= deletar, fg="red") 
-botaoApagar.grid(row=3, column=0, columnspan=2, pady=10)
+botaoApagar.grid(row=0, column=6, sticky=W, padx=15, pady=5)
 
 
 # --- CANVAS  ---
