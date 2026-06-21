@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import colorchooser
+from modelos.classes import * 
 
 # --- MEMÓRIA ---
 figuras = []                    # GUARDA AS FIGURAS PRONTAS
@@ -11,9 +12,17 @@ y_ini = 0
 # --- AÇÕES DO MOUSE ---
 
 def iniciarDesenho(event):
-    global x_ini, y_ini
+    global x_ini, y_ini, figura_preview
     x_ini = event.x
     y_ini = event.y
+
+    # RABISCO :
+    forma_atual = forma_var.get()
+    cor_borda = borda_var.get()
+    cor_preenchimento = preencher_var.get()
+
+    if forma_atual == "Rabisco":
+       figura_preview = Rabisco(x_ini, y_ini, cor_borda)
 
 def moverDesenho(event):
     # RASCUNHO VISTO NA HORA 
@@ -26,14 +35,21 @@ def moverDesenho(event):
     cor_borda = borda_var.get()
     cor_preenchimento = preencher_var.get()
     
-    # P/ O CÍRCULO ACOMPANHAR O MOUSE
-    if forma_atual == "Círculo":
-        largura = abs(x_atual - x_ini)
-        x_atual = x_ini + largura if x_atual > x_ini else x_ini - largura
-        y_atual = y_ini + largura if y_atual > y_ini else y_ini - largura
+    # RABISCO SE ADICIONA APENAS O PONTO AO OBJETO
+    if forma_atual == "Rabisco":
+        if isinstance(figura_preview, Rabisco):
+            figura_preview.adicionar_pontos(x_atual, y_atual)
+    
+    else: 
+        if forma_atual == "Retângulo":
+            figura_preview = Retangulo(x_ini, y_ini, x_atual, y_atual, cor_borda, cor_preenchimento)
+        elif forma_atual == "Oval":
+            figura_preview = Oval(x_ini, y_ini, x_atual, y_atual, cor_borda, cor_preenchimento)
+        elif forma_atual == "Círculo":
+            figura_preview = Circulo(x_ini, y_ini, x_atual, y_atual, cor_borda, cor_preenchimento)
+        elif forma_atual == "Linha":
+            figura_preview = Linha(x_ini, y_ini, x_atual, y_atual, cor_borda)
 
-    # OPÇÕES ESCOLHIDAS NO MENU COM RASCUNHO
-    figura_preview = (forma_atual, x_ini, y_ini, x_atual, y_atual, cor_borda, cor_preenchimento)
     desenhar_tudo()
 
 def terminarDesenho(event):
@@ -49,24 +65,14 @@ def terminarDesenho(event):
 def desenhar_tudo():
     canvas.delete("all")  
     
-    # REDESENHA AS FORMAS GUARDADAS NA LISTA
-    for fig, x1, y1, x2, y2, cborda, cpreencher in figuras:
-        if fig == "Retângulo":
-            canvas.create_rectangle(x1, y1, x2, y2, fill=cpreencher, outline=cborda)
-        elif fig == "Oval" or fig == "Círculo":
-            canvas.create_oval(x1, y1, x2, y2, fill=cpreencher, outline=cborda)
-        elif fig == "Linha":
-            canvas.create_line(x1, y1, x2, y2, fill = cborda)
-
+    # REDESENHA AS FORMAS 
+    for figura in figuras:
+        figura.desenhar(canvas)
+            
     # DESENHA O RASCUNHO ATUAL
     if figura_preview:
-        fig, x1, y1, x2, y2, cborda, cpreencher = figura_preview
-        if fig == "Retângulo":
-            canvas.create_rectangle(x1, y1, x2, y2, fill=cpreencher, outline=cborda, dash=(4, 2))
-        elif fig == "Oval" or fig == "Círculo":
-            canvas.create_oval(x1, y1, x2, y2, fill = cpreencher, outline=cborda, dash=(4, 2))
-        elif fig == "Linha":
-            canvas.create_line(x1, y1, x2, y2, fill = cborda, dash=(4,2))
+        figura_preview.desenhar(canvas, rascunho=True)
+
 
 def escolher_cor(variavel_tk):
     cor_selecionada = colorchooser.askcolor()[1]
@@ -91,7 +97,7 @@ Label(funcionalidades, text="Escolha a Forma:").grid(row=0, column=0, sticky=E, 
 
 forma_var = StringVar(janela)
 forma_var.set("Retângulo")  # opção inicial
-menu_formas = OptionMenu(funcionalidades, forma_var, "Retângulo", "Oval", "Círculo", "Linha")
+menu_formas = OptionMenu(funcionalidades, forma_var, "Retângulo", "Oval", "Círculo", "Linha", "Rabisco")
 menu_formas.grid(row=0, column=1, sticky=W, padx=(5,15), pady=5)
 
 
