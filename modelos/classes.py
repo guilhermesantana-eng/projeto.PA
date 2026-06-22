@@ -1,3 +1,6 @@
+from tkinter import *
+
+
 #Classe principal, pai de todas
 class Figura:
     def __init__(self, cor_borda, cor_preenchimento):
@@ -105,3 +108,19 @@ class Linha(Figura):
         canvas.create_line(self.x1, self.y1, self.x2, self.y2,
                            fill = self.cor_borda,
                            dash = estilo_rascunho)
+
+class Poligono(Figura):
+    def __init__(self, pontos, cor_borda, cor_preenchimento):
+        super().__init__(cor_borda, cor_preenchimento)
+
+        self.pontos = pontos
+        
+    def desenhar(self, canvas, rascunho = False):
+        estilo_rascunho = (4,2) if rascunho else None
+
+        canvas.create_polygon(
+            self.pontos,
+            fill = self.cor_preenchimento,
+            outline = self.cor_borda,
+            dash = estilo_rascunho
+            )
