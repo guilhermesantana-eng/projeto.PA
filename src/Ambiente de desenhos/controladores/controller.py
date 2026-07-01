@@ -18,6 +18,8 @@ class Controlador:
         self.view.canvas.bind("<Button-1>", self.iniciar_desenho)
         self.view.canvas.bind("<B1-Motion>", self.mover_desenho)
         self.view.canvas.bind("<ButtonRelease-1>", self.terminarDesenho)
+        self.view.canvas.bind("<Double-Button-1>", terminarPoligono)
+        self.view.canvas.bind("<Motion>", moverPoligono)
 
     def iniciar_desenho(self, event):
         global x_ini, y_ini, figura_preview, pontos_poligono, linhas_poligono, linha_poligono
@@ -106,21 +108,28 @@ class Controlador:
                 self.desenhar_tudo()
 
     def terminar_poligono(self, cor_borda, cor_preenchimento):
-        # GERA O POLÍGONO E APAGA O TEMPORÁRIO
-        if len(self.pontos_poligono) >= 4:
-            # REMOVE OS PONTOS DUPLICADOS
-            self.pontos_poligono.pop()
+        global figura_preview, linhas_poligono
+        if self.view.obter_forma() == "Polígono":
             self.pontos_poligono.pop()
             
-        # CRIA O POLÍGONO PASSANDO UMA CÓPIA SEGURA DA LISTA DE PONTOS
-        novo_poligono = Poligono(self.pontos_poligono.copy(), cor_borda, cor_preenchimento)
-        
-        # LIMPA OS PONTOS TEMPORÁRIOS PARA O PRX POLÍGONO
-        self.pontos_poligono.clear()
-        
-        # aqui já adiciona direto ao array do armazenamento
-        self.desenho.adicionar_figura(novo_poligono)
-        return novo_poligono
+            cor_borda = self.view.obter_cor_borda()
+            cor_preenchimento = self.view.obter_cor_preench()
+
+            figura_preview = Polígono(pontos_poligono, cor_borda, cor_preenchimento)
+            for linha in linhas_poligono:
+            canvas.delete(linha)  #APAGA AS LINHAS DE RASCUNHO
+
+        canvas.delete(linha_poligono)   #APAGA A ULTIMA LINHA
+        linha_poligono = None
+        linhas_poligono =[]    #LIMPA A LISTA DE LINHAS
+
+        figuras.append(figura_preview) #GUARDANDO O POLIGONO NA LISTA DE FIGURAS E DEPOIS DESENHANDO ELE
+        figura_preview = None
+        desenhar_tudo()
+
+        pontos_poligono = [] #LIMPANDO A LISTA DE PONTOS PARA FICAR LIMPA PARA O PROXIMO POLIGONO
+    else:
+        return
     
     def desenhar_tudo(self):
         # LIMPA O CANVAS
