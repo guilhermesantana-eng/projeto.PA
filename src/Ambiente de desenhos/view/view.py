@@ -3,7 +3,7 @@ from tkinter import colorchooser
 
 #CLASSE GERAL DO VIEW
 class View:
-    def __init__(self, janela_principal, funcao_apagar):
+    def __init__(self, janela_principal):
         #CRIAR JANELA GERAL E A ABA DE FUNCIONALIDADES
         self.janela = janela_principal
         self.funcionalidades = Frame(janela_principal)
@@ -27,8 +27,8 @@ class View:
         self.BotaoPreench = Button(self.funcionalidades, text = "Selecionar cor do preenchimento", command= lambda: self.escolher_cor(self.preencher_var))
         self.BotaoPreench.grid(row = 0, column= 5, sticky= W, padx= (5,15), pady= 5)
         #CRIAR BOTÃO DE APAGAR
-        self.BotaoApagar = Button(self.funcionalidades, text="Apagar Tudo", command = funcao_apagar, fg="red")
-        self.BotaoApagar.grid(row=0, column=6, sticky=W, padx=15, pady=5)
+        #self.BotaoApagar = Button(self.funcionalidades, text="Apagar Tudo", command = funcao_apagar, fg="red")
+        #self.BotaoApagar.grid(row=0, column=6, sticky=W, padx=15, pady=5)
         #CRIAR O CANVAS
         self.canvas = Canvas(janela_principal, bg="white", width=1920, height=1000)
         self.canvas.pack()
@@ -47,3 +47,4 @@ class View:
     
     def obter_cor_preench(self):
         return self.preencher_var.get()
+    

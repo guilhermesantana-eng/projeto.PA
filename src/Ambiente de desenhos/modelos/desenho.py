@@ -1,4 +1,4 @@
-from modelo.classes import Poligono
+from modelos.classes import Poligono
 
 class Desenho:
     def __init__(self):
