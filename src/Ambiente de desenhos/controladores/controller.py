@@ -6,12 +6,15 @@ from controladores.ferramentas.oval_state import FerramentaOval
 from controladores.ferramentas.linha_state import FerramentaLinha
 from controladores.ferramentas.rabisco_state import FerramentaRabisco
 from controladores.ferramentas.poligono_state import FerramentaPoligono
+from tkinter import filedialog
 
 
 class Controlador:
-    def __init__(self, view, desenho):
+    def __init__(self, view, modelo):
         self.view = view
-        self.desenho = desenho
+        self.desenho = modelo
+        self.view.controlador = self
+        self.estado_atual = None
 
         self.ferramentas = {
             "Retângulo" : FerramentaRetangulo(),
@@ -61,6 +64,20 @@ class Controlador:
         # DESENHA O RASCUNHO ATUAL, SE HOUVER
         if self.desenho.figura_preview:
             desenhar_figura_na_tela(self.view.canvas, self.desenho.figura_preview, rascunho=True)
+
+    def salvar_arquivo(self):
+        # ABRE A CAIXINHA DE DIÁLOGO PARA SALVAR
+        arquivo_path = filedialog.asksaveasfilename(defaultextension=".pkl")
+        if arquivo_path:
+            self.desenho.salvar_dados(arquivo_path)
+
+    def abrir_arquivo(self):
+        # ABRE A CAIXINHA DE DIÁLOGO PARA ABRIR
+        arquivo_path = filedialog.askopenfilename(filetypes=[("Arquivos de desenho", "*.pkl")])
+        if arquivo_path:
+            self.desenho.carregar_dados(arquivo_path)
+            self.desenhar_tudo()
+
 
     def iniciar(self):
         self.view.janela.mainloop()

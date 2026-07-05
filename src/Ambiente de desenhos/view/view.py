@@ -1,6 +1,7 @@
 
 from tkinter import *
 from tkinter import colorchooser
+from tkinter import Button
 
 
 def desenhar_figura_na_tela(canvas, figura, rascunho=False):
@@ -42,6 +43,14 @@ class View:
         #-------- CRIAR O CANVAS
         self.canvas = Canvas(janela_principal, bg="white", width=1920, height=1000)
         self.canvas.pack()
+
+        #-------- CRIAR BOTÃO DE SALVAR
+        self.botao_salvar = Button(self.funcionalidades, text="Salvar", command=lambda: self.controlador.salvar_arquivo())
+        self.botao_salvar.grid(row=0, column=7, padx=15, pady=5)
+
+        #-------- CRIAR BOTÃO DE ABRIR
+        self.botao_abrir = Button(self.funcionalidades, text="Abrir", command=lambda: self.controlador.abrir_arquivo())
+        self.botao_abrir.grid(row=0, column=8, padx=15, pady=5)
 
     #METODO PRA SELECIONAR AS CORES DE BORDA E PREENCHIMENTO
     def escolher_cor(self, variavel_cor):

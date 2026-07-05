@@ -1,4 +1,6 @@
 from modelos.classes import Poligono
+import pickle
+
 
 class Desenho:
     def __init__(self):
@@ -6,7 +8,7 @@ class Desenho:
         self.figuras = []                    # GUARDA OS PONTOS
         self.figura_preview = None           # GUARDA O RASCUNHO ATUAL
         self.pontos_poligono = []            # GUARDA AS COORDENADAS ATUAIS DO POLÍGONO
-        
+
     def adicionar_figura(self, figura):
         # --- ADICIONA UMA FIGURA CONCLUÍDA NA LISTA GLOBAL
         self.figuras.append(figura)
@@ -42,3 +44,19 @@ class Desenho:
         # aqui já adiciona direto ao array do armazenamento
         self.adicionar_figura(novo_poligono)
         return novo_poligono
+    
+    def salvar_dados(self, nome_arquivo):
+        # ABRE O ARQUIVO 
+        arquivo = open(nome_arquivo, "wb")
+        pickle.dump(self.figuras, arquivo)
+        arquivo.close()
+    
+    def carregar_dados(self, nome_arquivo):
+        #ABRE O ARQUIVO EM MODO DE LEITURA BINÁRIA
+        arquivo = open(nome_arquivo, 'rb')
+        dados_carregados = pickle.load(arquivo)
+        self.figuras.clear()
+        self.figuras.extend(dados_carregados)
+        
+        # FECHA APÓS LER
+        arquivo.close()
