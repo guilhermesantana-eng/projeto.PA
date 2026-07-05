@@ -54,6 +54,9 @@ class Desenho:
     def carregar_dados(self, nome_arquivo):
         #ABRE O ARQUIVO EM MODO DE LEITURA BINÁRIA
         arquivo = open(nome_arquivo, 'rb')
-        self.figuras = pickle.load(arquivo)
+        dados_carregados = pickle.load(arquivo)
+        self.figuras.clear()
+        self.figuras.extend(dados_carregados)
+        
         # FECHA APÓS LER
         arquivo.close()
