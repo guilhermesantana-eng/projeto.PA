@@ -194,28 +194,46 @@ class Poligono(Figura):
             self.pontos[i+1] += dy    # Altera o Y
     
     def contem_ponto(self, px, py):
+        """
+        Versão adaptada do algoritmo do professor para lista linear [x1, y1, x2, y2...].
+        Garante o clique no centro/preenchimento do polígono sem alterar o Modelo.
+        """
+        dentro = False
         qtd_coordenadas = len(self.pontos)
         
-        # Se não tiver pelo menos 4 números (x1, y1, x2, y2), não é um segmento válido
-        if qtd_coordenadas < 4: 
+        # Como cada ponto ocupa 2 posições (x e y), a quantidade de vértices é total / 2
+        n_vertices = qtd_coordenadas // 2
+
+        # Um polígono válido precisa de pelo menos 3 vértices (6 coordenadas)
+        if n_vertices < 3:
             return False
 
-        # Percorre a lista pulando de 2 em 2 (i assume as posições dos Xs: 0, 2, 4...)
-        for i in range(0, qtd_coordenadas, 2):
-            x1 = self.pontos[i]
-            y1 = self.pontos[i+1]
-            
-            # Pega o próximo ponto. Se for o último par, conecta de volta ao início do polígono
-            if i + 2 < qtd_coordenadas:
-                x2 = self.pontos[i+2]
-                y2 = self.pontos[i+3]
-            else:
-                x2 = self.pontos[0]
-                y2 = self.pontos[1]
+        # Inicializa o primeiro vértice (índice 0 e 1) como ponto de partida
+        p1x = self.pontos[0]
+        p1y = self.pontos[1]
 
-            # Agora chama a função distância (garantindo que ela está fora das classes ou importada)
-            if distancia(x1, y1, x2, y2, px, py) < 6.0:
-                return True
-                
-        return False
-    
+        # O laço roda para cada vértice (e faz uma volta extra para fechar o polígono)
+        for i in range(n_vertices + 1):
+            # Descobre o índice real na lista linear usando o resto da divisão (%)
+            # i % n_vertices garante que na última volta ele conecte ao primeiro vértice de novo
+            indice_base = (i % n_vertices) * 2
+            
+            p2x = self.pontos[indice_base]
+            p2y = self.pontos[indice_base + 1]
+
+            # --- Daqui para baixo é a lógica matemática exata do professor ---
+            # Verifica se o raio horizontal intercepta a aresta do polígono
+            if py > min(p1y, p2y):
+                if py <= max(p1y, p2y):
+                    if px <= max(p1x, p2x):
+                        # Calcula a interceptação X exata da aresta
+                        if p1y != p2y:
+                            x_interceptado = (py - p1y) * (p2x - p1x) / (p2y - p1y) + p1x
+                        # Se o ponto estiver à esquerda da interceptação, inverte o estado
+                        if p1x == p2x or px <= x_interceptado:
+                            dentro = not dentro
+
+            # O próximo ponto de partida (p1) passa a ser o ponto de chegada atual (p2)
+            p1x, p1y = p2x, p2y
+
+        return dentro
