@@ -45,7 +45,6 @@ class Controlador:
         forma_atual = self.view.obter_forma()
         self.ferramenta_atual = self.ferramentas[forma_atual]
         self.ferramenta_atual.iniciar_desenho(self, event)
-
     
     def mover_desenho(self, event):
         self.ferramenta_atual.mover_desenho(self, event)

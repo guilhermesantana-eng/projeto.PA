@@ -58,4 +58,7 @@ class FerramentaPoligono(FerramentaDesenho):
         self.linha_poligono_temp = None
         self.linhas_poligono_fixas_temp = []
 
+        # Limpa a figura preview para evitar bugs
+        controller.desenho.figura_preview = None
+
         controller.desenhar_tudo()
