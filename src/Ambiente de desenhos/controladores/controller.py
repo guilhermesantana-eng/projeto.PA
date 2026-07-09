@@ -6,6 +6,7 @@ from controladores.ferramentas.oval_state import FerramentaOval
 from controladores.ferramentas.linha_state import FerramentaLinha
 from controladores.ferramentas.rabisco_state import FerramentaRabisco
 from controladores.ferramentas.poligono_state import FerramentaPoligono
+from controladores.ferramentas.selecao_state import FerramentaSelecao
 from tkinter import filedialog
 
 
@@ -16,13 +17,19 @@ class Controlador:
         self.view.controlador = self
         self.estado_atual = None
 
+        # Guarda a figura clicada no modo Seleção
+        self.figura_selecionada = None 
+        # Buffer para copiar e colar (Deep Copy)
+        self.buffer_copia = None
+
         self.ferramentas = {
             "Retângulo" : FerramentaRetangulo(),
             "Círculo" : FerramentaCirculo(),
             "Oval" : FerramentaOval(),
             "Linha" :  FerramentaLinha(),
             "Rabisco" : FerramentaRabisco(),
-            "Polígono" : FerramentaPoligono()      
+            "Polígono" : FerramentaPoligono(),
+            "Seleção" : FerramentaSelecao()
         }
 
         self.ferramenta_atual = self.ferramentas["Retângulo"]

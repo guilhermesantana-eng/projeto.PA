@@ -19,7 +19,7 @@ class View:
         Label(self.funcionalidades, text="Escolha a Forma:").grid(row=0, column=0, sticky=E, padx=5, pady=5)
         self.forma_var = StringVar(janela_principal)
         self.forma_var.set("Retângulo")
-        self.menu_formas = OptionMenu(self.funcionalidades, self.forma_var, "Retângulo", "Oval", "Círculo", "Linha", "Rabisco", "Polígono")
+        self.menu_formas = OptionMenu(self.funcionalidades, self.forma_var, "Retângulo", "Oval", "Círculo", "Linha", "Rabisco", "Polígono", "Seleção")
         self.menu_formas.grid(row=0, column=1, sticky=W, padx=(5,15), pady=5)
 
         #------ CRIAR BOTAO DE ESCOLHER COR DA BORDA
