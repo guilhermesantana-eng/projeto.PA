@@ -8,6 +8,8 @@ class Desenho:
         self.figuras = []                    # GUARDA OS PONTOS
         self.figura_preview = None           # GUARDA O RASCUNHO ATUAL
         self.pontos_poligono = []            # GUARDA AS COORDENADAS ATUAIS DO POLÍGONO
+        self.figura_selecionada = None       # GUARDA A FIGURA SELECIONADA (SE HOUVER)
+        self.buffer_copia = None             # BUFFER PRA GUARDAR A FIGURA COPIADA
 
     def adicionar_figura(self, figura):
         # --- ADICIONA UMA FIGURA CONCLUÍDA NA LISTA GLOBAL

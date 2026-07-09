@@ -8,7 +8,7 @@ from controladores.ferramentas.rabisco_state import FerramentaRabisco
 from controladores.ferramentas.poligono_state import FerramentaPoligono
 from controladores.ferramentas.selecao_state import FerramentaSelecao
 from tkinter import filedialog
-
+import copy
 
 class Controlador:
     def __init__(self, view, modelo):
@@ -17,8 +17,6 @@ class Controlador:
         self.view.controlador = self
         self.estado_atual = None
 
-        # Guarda a figura clicada no modo Seleção
-        self.figura_selecionada = None 
         # Buffer para copiar e colar (Deep Copy)
         self.buffer_copia = None
 
@@ -40,6 +38,10 @@ class Controlador:
         self.view.canvas.bind("<ButtonRelease-1>", self.terminar_desenho)
         self.view.canvas.bind("<Double-Button-1>", self.terminar_poligono)
         self.view.canvas.bind("<Motion>", self.mover_poligono)
+        # EVENTOS DO TECLADO
+        self.view.janela.bind("<Delete>", self.excluir_figura)
+        self.view.janela.bind("<Control-c>", self.copiar_figura)
+        self.view.janela.bind("<Control-v>", self.colar_figura )
 
     def iniciar_desenho(self, event):
         forma_atual = self.view.obter_forma()
@@ -70,6 +72,23 @@ class Controlador:
         # DESENHA O RASCUNHO ATUAL, SE HOUVER
         if self.desenho.figura_preview:
             desenhar_figura_na_tela(self.view.canvas, self.desenho.figura_preview, rascunho=True)
+
+    def excluir_figura(self, event):
+        if self.desenho.figura_selecionada:
+            self.desenho.figuras.remove(self.desenho.figura_selecionada)
+            self.desenho.figura_selecionada = None
+            self.desenhar_tudo()
+
+    def copiar_figura(self, event):
+        if self.desenho.figura_selecionada:
+            self.desenho.buffer_copia = copy.deepcopy(self.desenho.figura_selecionada) # ARMAZENA A FIGURA NO BUFFER
+
+    def colar_figura(self, event):
+        if self.desenho.buffer_copia:
+            nova_figura = copy.deepcopy(self.desenho.buffer_copia)
+            nova_figura.mover(10, 10)         # MOVE A FIGURA COPIADA PARA NÃO SOBREPOR A ORIGINAL
+            self.desenho.adicionar_figura(nova_figura)        # ADICIONA A FIGURA COPIADA E COLADA AO DESENHO
+            self.desenhar_tudo()
 
     def salvar_arquivo(self):
         # ABRE A CAIXINHA DE DIÁLOGO PARA SALVAR
