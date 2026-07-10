@@ -84,11 +84,13 @@ class Desenho:
         if self.figura_selecionada and self.figura_selecionada in self.figuras:
             idx = self.figuras.index(self.figura_selecionada)
             if idx < len(self.figuras) - 1: # SE JÁ ESTIVER NO TOPO N TEM PARA QUE IR
-                self.figurtas[idx] = self.figuras[len(self.figuras) - 1]
+                for i in range(idx, len(self.figuras)-1):
+                    self.figuras[i], self.figuras[i+1] = self.figuras[i+1], self.figuras[i]
     
     def mover_todo_para_tras(self):
         # LEVA A FIGURA LÁ PARA BAIXO
         if self.figura_selecionada and self.figura_selecionada in self.figuras:
             idx = self.figuras.index(self.figura_selecionada)
             if idx > 0: # SE JÁ ESTIVER ATRÁS DE TUDO N TEM PARA QUE IR
-                self.figurtas[idx] = self.figuras[0]
+                for i in range(idx, 0, -1):
+                    self.figuras[i], self.figuras[i-1] = self.figuras[i-1], self.figuras[i]                

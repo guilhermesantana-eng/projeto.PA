@@ -131,15 +131,15 @@ class Controlador:
 
     def alterar_index_todo_frente(self, event):
         #SETA PARA CIMA
-        if self.desemho.figura_selecionada:
-            self.desemho.mover_todo_para_frente()
-            self.desemhar_tudo()
+        if self.desenho.figura_selecionada:
+            self.desenho.mover_todo_para_frente()
+            self.desenhar_tudo()
 
     def alterar_index_todo_tras(self, event):
         #SETA PARA BAIXO
-        if self.desemho.figura_selecionada:
-            self.desemho.mover_todo_para_tras()
-            self.desemhar_tudo()
+        if self.desenho.figura_selecionada:
+            self.desenho.mover_todo_para_tras()
+            self.desenhar_tudo()
 
 
     def mudar_cor_figura_selecionada(self, tipo, nova_cor):
