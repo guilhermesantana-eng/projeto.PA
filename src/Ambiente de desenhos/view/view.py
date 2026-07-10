@@ -58,6 +58,13 @@ class View:
         if cor_selecionada:
             variavel_cor.set(cor_selecionada)
 
+            # VÊ SE O BOTÃO CLICADO FOI O DE BORDA OU DE PREENCHIMENTO
+            tipo = 'borda' if variavel_cor == self.borda_var else 'preenchimento'
+
+            # CHAMA O MÉTODO "mudar_cor_figura_selecionada"
+            if hasattr(self, 'controlador') and self.controlador:
+                self.controlador.mudar_cor_figura_selecionada(tipo, cor_selecionada)
+
     #METODOS PARA OBTER AS VARIAVEIS DE FORMA E CORES
     def obter_forma(self):
         return self.forma_var.get()

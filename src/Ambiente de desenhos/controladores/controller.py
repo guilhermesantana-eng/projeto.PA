@@ -42,6 +42,8 @@ class Controlador:
         self.view.janela.bind("<Delete>", self.excluir_figura)
         self.view.janela.bind("<Control-c>", self.copiar_figura)
         self.view.janela.bind("<Control-v>", self.colar_figura )
+        self.view.janela.bind("<Left>", self.alterar_z_index_atras)
+        self.view.janela.bind("<Right>", self.alterar_z_index_frente)
 
     def iniciar_desenho(self, event):
         forma_atual = self.view.obter_forma()
@@ -103,6 +105,28 @@ class Controlador:
             self.desenho.carregar_dados(arquivo_path)
             self.desenhar_tudo()
 
+    def alterar_z_index_atras(self, event):
+       #SETA ESQUERDA- PARA TRÁS
+        if self.desenho.figura_selecionada:
+            self.desenho.mover_para_tras()
+            self.desenhar_tudo()
+
+    def alterar_z_index_frente(self, event):
+        #SETA DIREITO- PARA FRENTE
+        if self.desenho.figura_selecionada:
+            self.desenho.mover_para_frente()
+            self.desenhar_tudo()
+
+    def mudar_cor_figura_selecionada(self, tipo, nova_cor):
+        # VÊ SE HÁ ALGUMA FIGURA SELECIONADA
+        if self.desenho.figura_selecionada:
+            if tipo == 'borda':
+                self.desenho.figura_selecionada.cor_borda = nova_cor
+            elif tipo == 'preenchimento':
+                self.desenho.figura_selecionada.cor_preenchimento = nova_cor
+            
+            # REDESENHA
+            self.desenhar_tudo()
 
     def iniciar(self):
         self.view.janela.mainloop()

@@ -62,3 +62,19 @@ class Desenho:
         
         # FECHA APÓS LER
         arquivo.close()
+
+    def mover_para_tras(self):
+        # TRAZ A FIGURA PARA TRÁS NA LISTA
+        if self.figura_selecionada and self.figura_selecionada in self.figuras:
+            idx = self.figuras.index(self.figura_selecionada)
+            if idx > 0: #caso n seja o primeiro, pode ir para trás
+                # TROCA DE LUGAR COM O ELEMENTO ANTERIOR
+                self.figuras[idx], self.figuras[idx - 1] = self.figuras[idx - 1], self.figuras[idx]
+
+    def mover_para_frente(self):
+        # LEVA A FIGURA PARA FRENTE NA LISTA
+        if self.figura_selecionada and self.figura_selecionada in self.figuras:
+            idx = self.figuras.index(self.figura_selecionada)
+            if idx < len(self.figuras) - 1:  # caso n seja a última, pode ir para frente
+                # TROCA DE LUGAR COM O PRÓXIMO ELEMENTO
+                self.figuras[idx], self.figuras[idx + 1] = self.figuras[idx + 1], self.figuras[idx]
