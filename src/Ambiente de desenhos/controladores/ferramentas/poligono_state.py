@@ -18,6 +18,7 @@ class FerramentaPoligono(FerramentaDesenho):
             linha_fixa = controller.view.canvas.create_line(
                 controller.desenho.pontos_poligono[-4], controller.desenho.pontos_poligono[-3],
                 controller.desenho.pontos_poligono[-2], controller.desenho.pontos_poligono[-1],
+                width=5
             )
             self.linhas_poligono_fixas_temp.append(linha_fixa)
         
@@ -38,7 +39,7 @@ class FerramentaPoligono(FerramentaDesenho):
             y_atual = event.y
 
             self.linha_poligono_temp = controller.view.canvas.create_line(
-                x_base, y_base, x_atual, y_atual, dash=(4,2)
+                x_base, y_base, x_atual, y_atual, dash=(4,2), width=5
             )
 
     def terminar_desenho(self, controller, event):
