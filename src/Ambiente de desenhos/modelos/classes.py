@@ -35,7 +35,8 @@ class Retangulo(Figura):
             self.x1, self.y1, self.x2, self.y2,
             outline = self.cor_borda,
             fill = self.cor_preenchimento, 
-            dash = estilo_rascunho
+            dash = estilo_rascunho,
+            width= 5
         )
     
     def mover(self, dx, dy):
@@ -66,7 +67,9 @@ class Oval(Figura):
             self.x1, self.y1, self.x2, self.y2, 
             fill = self.cor_preenchimento, 
             outline = self.cor_borda, 
-            dash = estilo_rascunho)
+            dash = estilo_rascunho,
+            width= 5
+        )
     
     def mover(self, dx, dy):
         self.x1 += dx
@@ -100,7 +103,8 @@ class Circulo(Figura):
             self.x1, self.y1, self.x2, self.y2, 
             fill = self.cor_preenchimento, 
             outline = self.cor_borda, 
-            dash = estilo_rascunho
+            dash = estilo_rascunho,
+            width= 5
         )
     
     def mover(self, dx, dy):
@@ -130,7 +134,8 @@ class Rabisco(Figura):
             canvas.create_line(
                 self.pontos, 
                 fill=self.cor_borda, 
-                dash=estilo_rascunho
+                dash=estilo_rascunho,
+                width= 5
             )
     
     def mover(self, dx, dy):
@@ -159,7 +164,8 @@ class Linha(Figura):
 
         canvas.create_line(self.x1, self.y1, self.x2, self.y2,
                            fill = self.cor_borda,
-                           dash = estilo_rascunho)
+                           dash = estilo_rascunho,
+                           width= 5)
     
     def mover(self, dx, dy):
         self.x1 += dx
@@ -184,7 +190,8 @@ class Poligono(Figura):
             self.pontos,
             fill = self.cor_preenchimento,
             outline = self.cor_borda,
-            dash = estilo_rascunho
+            dash = estilo_rascunho,
+            width = 10
             )
 
     def mover(self, dx, dy):
