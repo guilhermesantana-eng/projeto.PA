@@ -8,7 +8,8 @@ class Figura:
         self.cor_borda = cor_borda
         self.cor_preenchimento = cor_preenchimento
     
-    def desenhar(self, canvas, rascunho=False):
+    # Refatorado para aceitar a flag de seleção de forma independente
+    def desenhar(self, canvas, selecionada=False, rascunho=False):
         # MÉTODO EXPLICADO NA ULTIMA AULA DE GIOVANNY
         raise NotImplementedError("As subclasses precisam implementar o método desenhar()")
     
@@ -28,15 +29,16 @@ class Retangulo(Figura):
         self.x2 = x2
         self.y2 = y2
 
-    def desenhar(self, canvas, rascunho = False):
+    def desenhar(self, canvas, selecionada = False, rascunho = False):
+        cor_borda_atual = "green" if selecionada else self.cor_borda
         estilo_rascunho = (4,2) if rascunho else None
 
         canvas.create_rectangle(
             self.x1, self.y1, self.x2, self.y2,
-            outline = self.cor_borda,
+            outline = cor_borda_atual,
             fill = self.cor_preenchimento, 
             dash = estilo_rascunho,
-            width= 5
+            width = 5
         )
     
     def mover(self, dx, dy):
@@ -60,15 +62,16 @@ class Oval(Figura):
         self.x2 = x2
         self.y2 = y2
     
-    def desenhar(self, canvas, rascunho = False):
+    def desenhar(self, canvas, selecionada = False, rascunho = False):
+        cor_borda_atual = "green" if selecionada else self.cor_borda
         estilo_rascunho = (4,2) if rascunho else None
 
         canvas.create_oval(
             self.x1, self.y1, self.x2, self.y2, 
             fill = self.cor_preenchimento, 
-            outline = self.cor_borda, 
+            outline = cor_borda_atual, 
             dash = estilo_rascunho,
-            width= 5
+            width = 5
         )
     
     def mover(self, dx, dy):
@@ -95,16 +98,16 @@ class Circulo(Figura):
         self.x2 = self.x1 + largura if self.x2 > self.x1 else self.x1 - largura
         self.y2 = self.y1 + largura if self.y2 > self.y1 else self.y1 - largura
 
-    
-    def desenhar(self, canvas, rascunho = False):
+    def desenhar(self, canvas, selecionada = False, rascunho = False):
+        cor_borda_atual = "green" if selecionada else self.cor_borda
         estilo_rascunho = (4,2) if rascunho else None
 
         canvas.create_oval(
             self.x1, self.y1, self.x2, self.y2, 
             fill = self.cor_preenchimento, 
-            outline = self.cor_borda, 
+            outline = cor_borda_atual, 
             dash = estilo_rascunho,
-            width= 5
+            width = 5
         )
     
     def mover(self, dx, dy):
@@ -124,29 +127,29 @@ class Rabisco(Figura):
         self.pontos = [(x1, y1)]
     
     def adicionar_pontos(self, x, y):
-        #MÉTODO PARA O RABISCO ACUMULAR O RASTRO DEIXAD PELO MOUSE
+        #MÉTODO PARA O RABISCO ACUMULAR O RASTRO DEIXADO PELO MOUSE
         self.pontos.append((x, y))
 
-    def desenhar(self, canvas, rascunho = False):
+    def desenhar(self, canvas, selecionada = False, rascunho = False):
+        cor_borda_atual = "green" if selecionada else self.cor_borda
         estilo_rascunho = (4, 2) if rascunho else None
 
         if len(self.pontos) > 1:
             canvas.create_line(
                 self.pontos, 
-                fill=self.cor_borda, 
-                dash=estilo_rascunho,
-                width= 5
+                fill = cor_borda_atual, 
+                dash = estilo_rascunho,
+                width = 5
             )
     
     def mover(self, dx, dy):
         self.pontos = [(x + dx, y + dy) for x, y in self.pontos]
 
     def contem_ponto(self, px, py):
-        # Checa a distância de (px, py) para cada segmento consecutivo do rabisco
         for i in range(len(self.pontos) - 1):
             x1, y1 = self.pontos[i]
             x2, y2 = self.pontos[i+1]
-            if self.distancia(x1, y1, x2, y2, px, py) < 5.0:
+            if distancia(x1, y1, x2, y2, px, py) < 5.0:
                 return True
         return False
     
@@ -159,13 +162,16 @@ class Linha(Figura):
         self.x2 = x2
         self.y2 = y2
     
-    def desenhar(self, canvas, rascunho = False):
+    def desenhar(self, canvas, selecionada = False, rascunho = False):
+        cor_borda_atual = "green" if selecionada else self.cor_borda
         estilo_rascunho = (4, 2) if rascunho else None
 
-        canvas.create_line(self.x1, self.y1, self.x2, self.y2,
-                           fill = self.cor_borda,
-                           dash = estilo_rascunho,
-                           width= 5)
+        canvas.create_line(
+            self.x1, self.y1, self.x2, self.y2,
+            fill = cor_borda_atual,
+            dash = estilo_rascunho,
+            width = 5
+        )
     
     def mover(self, dx, dy):
         self.x1 += dx
@@ -183,16 +189,17 @@ class Poligono(Figura):
 
         self.pontos = pontos
         
-    def desenhar(self, canvas, rascunho = False):
+    def desenhar(self, canvas, selecionada = False, rascunho = False):
+        cor_borda_atual = "green" if selecionada else self.cor_borda
         estilo_rascunho = (4,2) if rascunho else None
 
         canvas.create_polygon(
             self.pontos,
             fill = self.cor_preenchimento,
-            outline = self.cor_borda,
+            outline = cor_borda_atual,
             dash = estilo_rascunho,
-            width = 10
-            )
+            width = 5
+        )
 
     def mover(self, dx, dy):
         # Percorre os índices modificando X (índices pares) e Y (índices ímpares)

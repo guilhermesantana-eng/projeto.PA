@@ -47,6 +47,11 @@ class Controlador:
 
     def iniciar_desenho(self, event):
         forma_atual = self.view.obter_forma()
+
+        # Se mudar de ferramenta, limpa a seleção direto no Modelo
+        if forma_atual != "Seleção":
+            self.desenho.figura_selecionada = None
+
         self.ferramenta_atual = self.ferramentas[forma_atual]
         self.ferramenta_atual.iniciar_desenho(self, event)
     
@@ -66,10 +71,14 @@ class Controlador:
     def desenhar_tudo(self):
         # LIMPA O CANVAS
         self.view.canvas.delete("all")
-        
+
+        # Pega a figura selecionada
+        figura_ativa = self.desenho.figura_selecionada
+
         # DESENHA TODAS AS FIGURAS CONCLUÍDAS
         for figura in self.desenho.figuras:
-            desenhar_figura_na_tela(self.view.canvas, figura, rascunho=False)
+            eh_selecionada = (figura == figura_ativa)
+            desenhar_figura_na_tela(self.view.canvas, figura, selecionada=eh_selecionada, rascunho=False)
         
         # DESENHA O RASCUNHO ATUAL, SE HOUVER
         if self.desenho.figura_preview:

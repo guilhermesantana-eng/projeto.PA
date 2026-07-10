@@ -4,8 +4,8 @@ from tkinter import colorchooser
 from tkinter import Button
 
 
-def desenhar_figura_na_tela(canvas, figura, rascunho=False):
-    figura.desenhar(canvas, rascunho)
+def desenhar_figura_na_tela(canvas, figura, selecionada=False, rascunho=False):
+    figura.desenhar(canvas, selecionada, rascunho)
 
 # CLASSE GERAL DO VIEW
 class View:
