@@ -78,3 +78,17 @@ class Desenho:
             if idx < len(self.figuras) - 1:  # caso n seja a última, pode ir para frente
                 # TROCA DE LUGAR COM O PRÓXIMO ELEMENTO
                 self.figuras[idx], self.figuras[idx + 1] = self.figuras[idx + 1], self.figuras[idx]
+    
+    def mover_todo_para_frente(self):
+        # LEVA A FIGURA PARA O TOPO 
+        if self.figura_selecionada and self.figura_selecionada in self.figuras:
+            idx = self.figuras.index(self.figura_selecionada)
+            if idx < len(self.figuras) - 1: # SE JÁ ESTIVER NO TOPO N TEM PARA QUE IR
+                self.figurtas[idx] = self.figuras[len(self.figuras) - 1]
+    
+    def mover_todo_para_tras(self):
+        # LEVA A FIGURA LÁ PARA BAIXO
+        if self.figura_selecionada and self.figura_selecionada in self.figuras:
+            idx = self.figuras.index(self.figura_selecionada)
+            if idx > 0: # SE JÁ ESTIVER ATRÁS DE TUDO N TEM PARA QUE IR
+                self.figurtas[idx] = self.figuras[0]

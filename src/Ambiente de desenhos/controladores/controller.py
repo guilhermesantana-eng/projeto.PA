@@ -44,6 +44,9 @@ class Controlador:
         self.view.janela.bind("<Control-v>", self.colar_figura )
         self.view.janela.bind("<Left>", self.alterar_z_index_atras)
         self.view.janela.bind("<Right>", self.alterar_z_index_frente)
+        self.view.janela.bind("<Up>", self.alterar_index_todo_frente)
+        self.view.janela.bind("<Down>", self.alterar_index_todo_tras)
+
 
     def iniciar_desenho(self, event):
         forma_atual = self.view.obter_forma()
@@ -125,6 +128,19 @@ class Controlador:
         if self.desenho.figura_selecionada:
             self.desenho.mover_para_frente()
             self.desenhar_tudo()
+
+    def alterar_index_todo_frente(self, event):
+        #SETA PARA CIMA
+        if self.desemho.figura_selecionada:
+            self.desemho.mover_todo_para_frente()
+            self.desemhar_tudo()
+
+    def alterar_index_todo_tras(self, event):
+        #SETA PARA BAIXO
+        if self.desemho.figura_selecionada:
+            self.desemho.mover_todo_para_tras()
+            self.desemhar_tudo()
+
 
     def mudar_cor_figura_selecionada(self, tipo, nova_cor):
         # VÊ SE HÁ ALGUMA FIGURA SELECIONADA
