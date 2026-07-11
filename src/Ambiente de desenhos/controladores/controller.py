@@ -18,7 +18,7 @@ class Controlador:
         self.estado_atual = None
 
         # Buffer para copiar e colar (Deep Copy)
-        self.buffer_copia = None
+        self.buffer_copia = [] 
 
         self.ferramentas = {
             "Retângulo" : FerramentaRetangulo(),
@@ -53,7 +53,7 @@ class Controlador:
 
         # Se mudar de ferramenta, limpa a seleção direto no Modelo
         if forma_atual != "Seleção":
-            self.desenho.figura_selecionada = None
+            self.desenho.figuras_selecionadas.clear()
 
         self.ferramenta_atual = self.ferramentas[forma_atual]
         self.ferramenta_atual.iniciar_desenho(self, event)
@@ -76,11 +76,11 @@ class Controlador:
         self.view.canvas.delete("all")
 
         # Pega a figura selecionada
-        figura_ativa = self.desenho.figura_selecionada
+        figura_ativa = self.desenho.figuras_selecionadas
 
         # DESENHA TODAS AS FIGURAS CONCLUÍDAS
         for figura in self.desenho.figuras:
-            eh_selecionada = (figura == figura_ativa)
+            eh_selecionada = (figura in figura_ativa)
             desenhar_figura_na_tela(self.view.canvas, figura, selecionada=eh_selecionada, rascunho=False)
         
         # DESENHA O RASCUNHO ATUAL, SE HOUVER
@@ -88,20 +88,22 @@ class Controlador:
             desenhar_figura_na_tela(self.view.canvas, self.desenho.figura_preview, rascunho=True)
 
     def excluir_figura(self, event):
-        if self.desenho.figura_selecionada:
-            self.desenho.figuras.remove(self.desenho.figura_selecionada)
-            self.desenho.figura_selecionada = None
+        if self.desenho.figuras_selecionadas:
+            for figura in self.desenho.figuras_selecionadas:
+                self.desenho.figuras.remove(figura)
+            self.desenho.figuras_selecionadas.clear()
             self.desenhar_tudo()
 
     def copiar_figura(self, event):
-        if self.desenho.figura_selecionada:
-            self.desenho.buffer_copia = copy.deepcopy(self.desenho.figura_selecionada) # ARMAZENA A FIGURA NO BUFFER
+        if self.desenho.figuras_selecionadas:
+            self.desenho.buffer_copia = copy.deepcopy(self.desenho.figuras_selecionadas) # ARMAZENA AS FIGURAS NO BUFFER
 
     def colar_figura(self, event):
         if self.desenho.buffer_copia:
-            nova_figura = copy.deepcopy(self.desenho.buffer_copia)
-            nova_figura.mover(10, 10)         # MOVE A FIGURA COPIADA PARA NÃO SOBREPOR A ORIGINAL
-            self.desenho.adicionar_figura(nova_figura)        # ADICIONA A FIGURA COPIADA E COLADA AO DESENHO
+            novas_figuras = copy.deepcopy(self.desenho.buffer_copia)
+            for figura in novas_figuras:
+                figura.mover(10, 10)         # MOVE A FIGURA COPIADA PARA NÃO SOBREPOR A ORIGINAL
+                self.desenho.adicionar_figura(figura)        # ADICIONA A FIGURA COPIADA E COLADA AO DESENHO
             self.desenhar_tudo()
 
     def salvar_arquivo(self):
@@ -119,37 +121,42 @@ class Controlador:
 
     def alterar_z_index_atras(self, event):
        #SETA ESQUERDA- PARA TRÁS
-        if self.desenho.figura_selecionada:
-            self.desenho.mover_para_tras()
+        if self.desenho.figuras_selecionadas:
+            for figura in self.desenho.figuras_selecionadas:
+                self.desenho.mover_para_tras()
             self.desenhar_tudo()
 
     def alterar_z_index_frente(self, event):
         #SETA DIREITO- PARA FRENTE
-        if self.desenho.figura_selecionada:
-            self.desenho.mover_para_frente()
+        if self.desenho.figuras_selecionadas:
+            for figura in self.desenho.figuras_selecionadas:
+                self.desenho.mover_para_frente()
             self.desenhar_tudo()
 
     def alterar_index_todo_frente(self, event):
         #SETA PARA CIMA
-        if self.desenho.figura_selecionada:
-            self.desenho.mover_todo_para_frente()
+        if self.desenho.figuras_selecionadas:
+            for figura in self.desenho.figuras_selecionadas:
+                self.desenho.mover_todo_para_frente()
             self.desenhar_tudo()
 
     def alterar_index_todo_tras(self, event):
         #SETA PARA BAIXO
-        if self.desenho.figura_selecionada:
-            self.desenho.mover_todo_para_tras()
+        if self.desenho.figuras_selecionadas:
+            for figura in self.desenho.figuras_selecionadas:
+                self.desenho.mover_todo_para_tras()
             self.desenhar_tudo()
 
 
     def mudar_cor_figura_selecionada(self, tipo, nova_cor):
         # VÊ SE HÁ ALGUMA FIGURA SELECIONADA
-        if self.desenho.figura_selecionada:
-            if tipo == 'borda':
-                self.desenho.figura_selecionada.cor_borda = nova_cor
-            elif tipo == 'preenchimento':
-                self.desenho.figura_selecionada.cor_preenchimento = nova_cor
-            
+        if self.desenho.figuras_selecionadas:
+            for figura in self.desenho.figuras_selecionadas:
+                if tipo == 'borda':
+                    figura.cor_borda = nova_cor
+                elif tipo == 'preenchimento':
+                    figura.cor_preenchimento = nova_cor
+
             # REDESENHA
             self.desenhar_tudo()
 

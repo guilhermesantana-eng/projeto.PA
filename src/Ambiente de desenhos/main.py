@@ -29,5 +29,5 @@ def iniciar_app():
 
     janela.mainloop()
 
-if __name__ == "__main__":
+if __name__ == "__main__": 
     iniciar_app()

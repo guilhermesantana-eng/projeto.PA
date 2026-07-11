@@ -8,8 +8,8 @@ class Desenho:
         self.figuras = []                    # GUARDA OS PONTOS
         self.figura_preview = None           # GUARDA O RASCUNHO ATUAL
         self.pontos_poligono = []            # GUARDA AS COORDENADAS ATUAIS DO POLÍGONO
-        self.figura_selecionada = None       # GUARDA A FIGURA SELECIONADA (SE HOUVER)
-        self.buffer_copia = None             # BUFFER PRA GUARDAR A FIGURA COPIADA
+        self.figuras_selecionadas = []       # GUARDA AS FIGURAS SELECIONADAS (SE HOUVER)
+        self.buffer_copia = []               # BUFFER PRA GUARDAR AS FIGURAS COPIADAS
 
     def adicionar_figura(self, figura):
         # --- ADICIONA UMA FIGURA CONCLUÍDA NA LISTA GLOBAL
@@ -65,32 +65,40 @@ class Desenho:
 
     def mover_para_tras(self):
         # TRAZ A FIGURA PARA TRÁS NA LISTA
-        if self.figura_selecionada and self.figura_selecionada in self.figuras:
-            idx = self.figuras.index(self.figura_selecionada)
-            if idx > 0: #caso n seja o primeiro, pode ir para trás
-                # TROCA DE LUGAR COM O ELEMENTO ANTERIOR
-                self.figuras[idx], self.figuras[idx - 1] = self.figuras[idx - 1], self.figuras[idx]
+        if self.figuras_selecionadas:
+            for figura in self.figuras_selecionadas:
+                if figura in self.figuras:
+                    idx = self.figuras.index(figura)
+                    if idx > 0: #caso n seja o primeiro, pode ir para trás
+                        # TROCA DE LUGAR COM O ELEMENTO ANTERIOR
+                        self.figuras[idx], self.figuras[idx - 1] = self.figuras[idx - 1], self.figuras[idx]
 
     def mover_para_frente(self):
         # LEVA A FIGURA PARA FRENTE NA LISTA
-        if self.figura_selecionada and self.figura_selecionada in self.figuras:
-            idx = self.figuras.index(self.figura_selecionada)
-            if idx < len(self.figuras) - 1:  # caso n seja a última, pode ir para frente
-                # TROCA DE LUGAR COM O PRÓXIMO ELEMENTO
-                self.figuras[idx], self.figuras[idx + 1] = self.figuras[idx + 1], self.figuras[idx]
-    
+        if self.figuras_selecionadas:
+            for figura in self.figuras_selecionadas:
+                if figura in self.figuras:
+                    idx = self.figuras.index(figura)
+                    if idx < len(self.figuras) - 1:  # caso n seja a última, pode ir para frente
+                        # TROCA DE LUGAR COM O PRÓXIMO ELEMENTO
+                        self.figuras[idx], self.figuras[idx + 1] = self.figuras[idx + 1], self.figuras[idx]
+
     def mover_todo_para_frente(self):
         # LEVA A FIGURA PARA O TOPO 
-        if self.figura_selecionada and self.figura_selecionada in self.figuras:
-            idx = self.figuras.index(self.figura_selecionada)
-            if idx < len(self.figuras) - 1: # SE JÁ ESTIVER NO TOPO N TEM PARA QUE IR
-                for i in range(idx, len(self.figuras)-1):
-                    self.figuras[i], self.figuras[i+1] = self.figuras[i+1], self.figuras[i]
+        if self.figuras_selecionadas:
+            for figura in self.figuras_selecionadas:
+                if figura in self.figuras:
+                    idx = self.figuras.index(figura)
+                    if idx < len(self.figuras) - 1: # SE JÁ ESTIVER NO TOPO N TEM PARA QUE IR
+                        for i in range(idx, len(self.figuras)-1):
+                            self.figuras[i], self.figuras[i+1] = self.figuras[i+1], self.figuras[i]
     
     def mover_todo_para_tras(self):
         # LEVA A FIGURA LÁ PARA BAIXO
-        if self.figura_selecionada and self.figura_selecionada in self.figuras:
-            idx = self.figuras.index(self.figura_selecionada)
-            if idx > 0: # SE JÁ ESTIVER ATRÁS DE TUDO N TEM PARA QUE IR
-                for i in range(idx, 0, -1):
-                    self.figuras[i], self.figuras[i-1] = self.figuras[i-1], self.figuras[i]                
+        if self.figuras_selecionadas:
+            for figura in self.figuras_selecionadas:
+                if figura in self.figuras:
+                    idx = self.figuras.index(figura)
+                    if idx > 0: # SE JÁ ESTIVER ATRÁS DE TUDO N TEM PARA QUE IR
+                        for i in range(idx, 0, -1):
+                            self.figuras[i], self.figuras[i-1] = self.figuras[i-1], self.figuras[i]                

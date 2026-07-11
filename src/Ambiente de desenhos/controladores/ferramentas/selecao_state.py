@@ -10,23 +10,27 @@ class FerramentaSelecao(FerramentaDesenho):
     def iniciar_desenho(self, controller, event):
         self.x_anterior = event.x
         self.y_anterior = event.y
-        controller.desenho.figura_selecionada = None
 
         # Varre as figuras de trás para frente (Z-index: topo primeiro)
         for figura in reversed(controller.desenho.figuras):
             if figura.contem_ponto(event.x, event.y):
-                controller.desenho.figura_selecionada = figura
-                break
+                if figura not in controller.desenho.figuras_selecionadas:
+                    controller.desenho.figuras_selecionadas.append(figura)
+                    break
+                else:
+                    controller.desenho.figuras_selecionadas.remove(figura)
+                    break
         
         controller.desenhar_tudo()
 
     def mover_desenho(self, controller, event):
-        if controller.desenho.figura_selecionada:
+        if controller.desenho.figuras_selecionadas:
             dx = event.x - self.x_anterior
             dy = event.y - self.y_anterior
             
             # Aplica o movimento no modelo
-            controller.desenho.figura_selecionada.mover(dx, dy)
+            for figura in controller.desenho.figuras_selecionadas:
+                figura.mover(dx, dy)
             
             self.x_anterior = event.x
             self.y_anterior = event.y
