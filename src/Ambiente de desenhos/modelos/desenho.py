@@ -35,18 +35,22 @@ class Desenho:
         if len(self.pontos_poligono) >= 4:
             # REMOVE OS PONTOS DUPLICADOS
             self.pontos_poligono.pop()
-            self.pontos_poligono.pop()
+            self.pontos_poligono.pop() 
             
-        # CRIA O POLÍGONO PASSANDO UMA CÓPIA SEGURA DA LISTA DE PONTOS
-        novo_poligono = Poligono(self.pontos_poligono.copy(), cor_borda, cor_preenchimento)
-        
-        # LIMPA OS PONTOS TEMPORÁRIOS PARA O PRX POLÍGONO
-        self.pontos_poligono.clear()
-        
-        # aqui já adiciona direto ao array do armazenamento
-        self.adicionar_figura(novo_poligono)
-        return novo_poligono
-    
+            # CRIA O POLÍGONO PASSANDO UMA CÓPIA SEGURA DA LISTA DE PONTOS
+            novo_poligono = Poligono(self.pontos_poligono.copy(), cor_borda, cor_preenchimento)
+            
+            # LIMPA OS PONTOS TEMPORÁRIOS PARA O PRX POLÍGONO
+            self.pontos_poligono.clear()
+            
+            # aqui já adiciona direto ao array do armazenamento
+            self.adicionar_figura(novo_poligono)
+            return novo_poligono
+        else:
+            # Se não houver pontos suficientes, apenas limpa a lista de pontos temporários
+            self.pontos_poligono.clear()
+            return None
+
     def salvar_dados(self, nome_arquivo):
         # ABRE O ARQUIVO 
         arquivo = open(nome_arquivo, "wb")
