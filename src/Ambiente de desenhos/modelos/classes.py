@@ -18,7 +18,10 @@ class Figura:
 
     def contem_ponto(self, px, py):
         raise NotImplementedError("As subclasses precisam implementar o método contem_ponto()")
-
+    
+    def esta_dentro(self, x, y):
+        raise NotImplementedError("As subclasses precisam implementar o método esta_dentro()")
+    
 #Subclasses 
 class Retangulo(Figura):
     def __init__(self, x1, y1, x2, y2, cor_borda, cor_preenchimento):
@@ -52,6 +55,14 @@ class Retangulo(Figura):
         min_x, max_x = min(self.x1, self.x2), max(self.x1, self.x2)
         min_y, max_y = min(self.y1, self.y2), max(self.y1, self.y2)
         return min_x <= px <= max_x and min_y <= py <= max_y
+    
+    def esta_dentro(self, x1, y1, x2, y2):
+        # Verifica se o retângulo está completamente dentro da área definida por (x1, y1) e (x2, y2)
+        min_x, max_x = min(x1, x2), max(x1, x2)
+        min_y, max_y = min(y1, y2), max(y1, y2)
+
+        return (min_x <= self.x1 <= max_x and min_y <= self.y1 <= max_y and
+                min_x <= self.x2 <= max_x and min_y <= self.y2 <= max_y)
 
 class Oval(Figura):
     def __init__(self, x1, y1, x2, y2, cor_borda, cor_preenchimento):
@@ -84,6 +95,13 @@ class Oval(Figura):
         min_x, max_x = min(self.x1, self.x2), max(self.x1, self.x2)
         min_y, max_y = min(self.y1, self.y2), max(self.y1, self.y2)
         return min_x <= px <= max_x and min_y <= py <= max_y
+    
+    def esta_dentro(self, x1, y1, x2, y2):
+        min_x, max_x = min(x1, x2), max(x1, x2)
+        min_y, max_y = min(y1, y2), max(y1, y2)
+
+        return (min_x <= self.x1 <= max_x and min_y <= self.y1 <= max_y and
+                min_x <= self.x2 <= max_x and min_y <= self.y2 <= max_y)
         
 class Circulo(Figura):
     def __init__(self, x1, y1, x2, y2, cor_borda, cor_preenchimento):
@@ -120,6 +138,13 @@ class Circulo(Figura):
         min_x, max_x = min(self.x1, self.x2), max(self.x1, self.x2)
         min_y, max_y = min(self.y1, self.y2), max(self.y1, self.y2)
         return min_x <= px <= max_x and min_y <= py <= max_y
+    
+    def esta_dentro(self, x1, y1, x2, y2):
+        min_x, max_x = min(x1, x2), max(x1, x2)
+        min_y, max_y = min(y1, y2), max(y1, y2)
+
+        return (min_x <= self.x1 <= max_x and min_y <= self.y1 <= max_y and
+                min_x <= self.x2 <= max_x and min_y <= self.y2 <= max_y)
 
 class Rabisco(Figura):
     def __init__(self, x1, y1, cor_borda):
@@ -153,6 +178,15 @@ class Rabisco(Figura):
                 return True
         return False
     
+    def esta_dentro(self, x1, y1, x2, y2):
+        min_x, max_x = min(x1, x2), max(x1, x2)
+        min_y, max_y = min(y1, y2), max(y1, y2)
+
+        for px, py in self.pontos:
+            if not (min_x <= px <= max_x and min_y <= py <= max_y):
+                return False
+        return True
+    
 class Linha(Figura):
     def __init__(self, x1, y1, x2, y2, cor_borda):
         super().__init__(cor_borda, cor_preenchimento = None)
@@ -182,6 +216,13 @@ class Linha(Figura):
     def contem_ponto(self, px, py):
         # AQUI USAMOS A FUNÇÃO DO PROFESSOR (distancia menor que 5 pixels da linha)
         return distancia(self.x1, self.y1, self.x2, self.y2, px, py) < 5.0
+    
+    def esta_dentro(self, x1, y1, x2, y2):
+        min_x, max_x = min(x1, x2), max(x1, x2)
+        min_y, max_y = min(y1, y2), max(y1, y2)
+
+        return (min_x <= self.x1 <= max_x and min_y <= self.y1 <= max_y and
+                min_x <= self.x2 <= max_x and min_y <= self.y2 <= max_y)
     
 class Poligono(Figura):
     def __init__(self, pontos, cor_borda, cor_preenchimento):
@@ -251,3 +292,14 @@ class Poligono(Figura):
             p1x, p1y = p2x, p2y
 
         return dentro
+    
+    def esta_dentro(self, x1, y1, x2, y2):
+        min_x, max_x = min(x1, x2), max(x1, x2)
+        min_y, max_y = min(y1, y2), max(y1, y2)
+
+        for i in range(0, len(self.pontos), 2):
+            px = self.pontos[i]
+            py = self.pontos[i + 1]
+            if not (min_x <= px <= max_x and min_y <= py <= max_y):
+                return False
+        return True

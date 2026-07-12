@@ -57,7 +57,7 @@ class FerramentaPoligono(FerramentaDesenho):
             controller.view.canvas.delete(self.linha_poligono_temp)
 
         self.linha_poligono_temp = None
-        self.linhas_poligono_fixas_temp = []
+        self.linhas_poligono_fixas_temp.clear()
 
         # Limpa a figura preview para evitar bugs
         controller.desenho.figura_preview = None

@@ -13,3 +13,6 @@ class FerramentaDesenho:
     
     def terminar_poligono(self, controller, event):
         return
+    
+    def selecionar_desenho(self, controller, event):
+        return

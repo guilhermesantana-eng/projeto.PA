@@ -16,6 +16,7 @@ class Controlador:
         self.desenho = modelo
         self.view.controlador = self
         self.estado_atual = None
+        self.eh_duplo_clique = False  # Serve para verificar se é um duplo clique
 
         # Buffer para copiar e colar (Deep Copy)
         self.buffer_copia = [] 
@@ -38,6 +39,7 @@ class Controlador:
         self.view.canvas.bind("<ButtonRelease-1>", self.terminar_desenho)
         self.view.canvas.bind("<Double-Button-1>", self.terminar_poligono)
         self.view.canvas.bind("<Motion>", self.mover_poligono)
+        self.view.canvas.bind("<Control-Button-1>", self.selecionar_desenho)
         # EVENTOS DO TECLADO
         self.view.janela.bind("<Delete>", self.excluir_figura)
         self.view.janela.bind("<Control-c>", self.copiar_figura)
@@ -69,7 +71,11 @@ class Controlador:
         self.ferramenta_atual.terminar_desenho(self, event)
 
     def terminar_poligono(self, event):
+        self.eh_duplo_clique = True  # Verifica que é um evento de duplo clique
         self.ferramenta_atual.terminar_poligono(self, event)
+    
+    def selecionar_desenho(self, event):
+        self.ferramenta_atual.selecionar_desenho(self, event)
 
     def desenhar_tudo(self):
         # LIMPA O CANVAS
