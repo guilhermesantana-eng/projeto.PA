@@ -23,9 +23,6 @@ class FerramentaSelecao(FerramentaDesenho):
                         controller.desenho.figuras_selecionadas.clear()  # Limpa a seleção anterior
                         controller.desenho.figuras_selecionadas.append(figura)
                         break
-                    else:
-                        controller.desenho.figuras_selecionadas.remove(figura)
-                        break
             
             controller.desenhar_tudo()
 
@@ -69,6 +66,9 @@ class FerramentaSelecao(FerramentaDesenho):
                 if figura not in controller.desenho.figuras_selecionadas:
                     controller.desenho.figuras_selecionadas.append(figura)
                     break
+                else:
+                    controller.desenho.figuras_selecionadas.remove(figura)
+                    break
         
         controller.desenhar_tudo()
 
@@ -77,3 +77,11 @@ class FerramentaSelecao(FerramentaDesenho):
             self.x_ini = event.x
             self.y_ini = event.y
             self.cor_borda = "grey"
+    
+    def selecionar_tudo(self, controller, event):
+        if controller.desenho.figuras_selecionadas != controller.desenho.figuras:
+            controller.desenho.figuras_selecionadas = controller.desenho.figuras.copy()
+            controller.desenhar_tudo()
+        else:
+            controller.desenho.figuras_selecionadas.clear()
+            controller.desenhar_tudo()

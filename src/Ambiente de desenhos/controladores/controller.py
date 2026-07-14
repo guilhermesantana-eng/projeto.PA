@@ -48,7 +48,7 @@ class Controlador:
         self.view.janela.bind("<Right>", self.alterar_z_index_frente)
         self.view.janela.bind("<Up>", self.alterar_index_todo_frente)
         self.view.janela.bind("<Down>", self.alterar_index_todo_tras)
-
+        self.view.janela.bind("<Control-a>", self.selecionar_tudo)
 
     def iniciar_desenho(self, event):
         forma_atual = self.view.obter_forma()
@@ -76,6 +76,9 @@ class Controlador:
     
     def selecionar_desenho(self, event):
         self.ferramenta_atual.selecionar_desenho(self, event)
+    
+    def selecionar_tudo(self, event):
+        self.ferramenta_atual.selecionar_tudo(self, event)
 
     def desenhar_tudo(self):
         # LIMPA O CANVAS

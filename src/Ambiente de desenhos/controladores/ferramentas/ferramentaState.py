@@ -16,3 +16,6 @@ class FerramentaDesenho:
     
     def selecionar_desenho(self, controller, event):
         return
+
+    def selecionar_tudo(self, controler, event):
+        return
