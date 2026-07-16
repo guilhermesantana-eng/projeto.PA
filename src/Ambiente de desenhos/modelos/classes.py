@@ -303,3 +303,33 @@ class Poligono(Figura):
             if not (min_x <= px <= max_x and min_y <= py <= max_y):
                 return False
         return True
+
+class FiguraComposta(Figura):
+    def __init__(self, figuras):
+        # HERDA DAS OUTRAS (FILHAS)
+        super().__init__(None, None)
+        self.figuras = figuras  # A LISTA QUE VAI CONTER AS FIGURAS 
+
+    def desenhar(self, canvas, selecionada=False, rascunho=False):
+        # REPASSA O PADRÃO DE DESENHAR
+        for figura in self.figuras:
+            figura.desenhar(canvas, selecionada, rascunho)
+    
+    def mover(self, dx, dy):
+        # MOVE TODAS AS FIGURAS JUNTAS
+        for figura in self.figuras:
+            figura.mover(dx, dy)
+
+    def contem_ponto(self, px, py):
+        # SE CLICAR EM ALGUMA DAS FIGURAS, "CLICA EM TODAS"
+        for figura in self.figuras:
+            if figura.contem_ponto(px, py):
+                return True
+        return False
+    
+    def esta_dentro(self, x1, y1, x2, y2):
+        # SE TODAS AS PARTES ESTIVEREM DENTRO, AÍ SIM O GRUPO TA DENTRO
+        for figura in self.figuras:
+            if not figura.esta_dentro(x1, y1, x2, y2):
+                return False
+        return True

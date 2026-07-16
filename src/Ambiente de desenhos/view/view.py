@@ -1,7 +1,6 @@
 
 from tkinter import *
 from tkinter import colorchooser
-from tkinter import Button
 
 
 def desenhar_figura_na_tela(canvas, figura, selecionada=False, rascunho=False):
@@ -51,6 +50,13 @@ class View:
         #-------- CRIAR BOTÃO DE ABRIR
         self.botao_abrir = Button(self.funcionalidades, text="Abrir", command=lambda: self.controlador.abrir_arquivo())
         self.botao_abrir.grid(row=0, column=8, padx=15, pady=5)
+
+        #-------- CRIAR BOTÕES DE AGRUPAR/DESAGRUPAR 
+        self.botao_agrupar = Button(self.funcionalidades, text="Agrupar (Ctrl+G)", command=lambda: self.controlador.agrupar_figuras())
+        self.botao_agrupar.grid(row=1, column=0, columnspan=2, pady=5)
+
+        self.botao_desagrupar = Button(self.funcionalidades, text="Desagrupar (Ctrl+U)", command=lambda: self.controlador.desagrupar_figuras())
+        self.botao_desagrupar.grid(row=1, column=2, columnspan=2, pady=5)
 
     #METODO PRA SELECIONAR AS CORES DE BORDA E PREENCHIMENTO
     def escolher_cor(self, variavel_cor):

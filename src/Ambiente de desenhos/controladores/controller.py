@@ -8,6 +8,7 @@ from controladores.ferramentas.rabisco_state import FerramentaRabisco
 from controladores.ferramentas.poligono_state import FerramentaPoligono
 from controladores.ferramentas.selecao_state import FerramentaSelecao
 from tkinter import filedialog
+from modelos.classes import Retangulo, Oval, Circulo, Linha, Rabisco, FiguraComposta
 import copy
 
 class Controlador:
@@ -49,6 +50,8 @@ class Controlador:
         self.view.janela.bind("<Up>", self.alterar_index_todo_frente)
         self.view.janela.bind("<Down>", self.alterar_index_todo_tras)
         self.view.janela.bind("<Control-a>", self.selecionar_tudo)
+        self.view.janela.bind("<Control-g>", self.agrupar_figuras)
+        self.view.janela.bind("<Control-u>", self.desagrupar_figuras)
 
     def iniciar_desenho(self, event):
         forma_atual = self.view.obter_forma()
@@ -167,6 +170,45 @@ class Controlador:
                     figura.cor_preenchimento = nova_cor
 
             # REDESENHA
+            self.desenhar_tudo()
+    
+    def agrupar_figuras(self, event=None):
+        # SÓ SE TIVER MAIS DE UMA FIGURA SELECIONADA
+        if len(self.desenho.figuras_selecionadas) > 1:
+            
+            figuras_para_agrupar = [figura for figura in self.desenho.figuras if figura in self.desenho.figuras_selecionadas]
+            # CRIA O GRUPO COM A CÓPIA DA LISTA ATUAL DE SELECIONADAS
+            grupo = FiguraComposta(figuras_para_agrupar)
+            
+            # REMOVE AS FIGURAS INDIVIDUAIS QUE ESTIVEREM SOLTAS
+            for figura in self.desenho.figuras_selecionadas:
+                self.desenho.figuras.remove(figura)
+    
+            self.desenho.figuras_selecionadas.clear()
+            self.desenho.adicionar_figura(grupo)
+            
+            # AQUI JÁ DEIXA O GRUPO SELECIONADO
+            self.desenho.figuras_selecionadas.append(grupo)
+            
+            self.desenhar_tudo()
+
+    def desagrupar_figuras(self, event=None):
+        # VERIFICA SE HÁ ALGO SELECIONADO
+        if self.desenho.figuras_selecionadas:
+            novas_selecionadas = []
+            
+            for figura in self.desenho.figuras_selecionadas:
+                if isinstance(figura, FiguraComposta):
+                    self.desenho.figuras.remove(figura)
+                    
+                    # DEVOLVE AS FIGURAS "FILHAS" PARA A TELA
+                    for filha in figura.figuras:
+                        self.desenho.adicionar_figura(filha)
+                        novas_selecionadas.append(filha) # SELECIONA AS FILHAS SOLTAS
+                else:
+                    novas_selecionadas.append(figura)
+            
+            self.desenho.figuras_selecionadas = novas_selecionadas
             self.desenhar_tudo()
 
     def iniciar(self):
