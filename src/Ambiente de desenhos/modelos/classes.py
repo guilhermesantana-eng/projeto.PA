@@ -306,29 +306,49 @@ class Poligono(Figura):
 
 class FiguraComposta(Figura):
     def __init__(self, figuras):
-        # HERDA DAS OUTRAS (FILHAS)
-        super().__init__(None, None)
-        self.figuras = figuras  # A LISTA QUE VAI CONTER AS FIGURAS 
+        self.figuras = figuras
+        self._cor_borda = None
+        self._cor_preenchimento = None
+
+    # --- COR DA BORDA
+    @property
+    def cor_borda(self):
+        return self._cor_borda
+
+    @cor_borda.setter
+    def cor_borda(self, nova_cor):
+        self._cor_borda = nova_cor
+        # REPASSA A COR DA BORDA PARA TODAS AS FIGURAS
+        for figura in self.figuras:
+            figura.cor_borda = nova_cor
+
+    # --- COR DE PREENCHIMENTO
+    @property
+    def cor_preenchimento(self):
+        return self._cor_preenchimento
+
+    @cor_preenchimento.setter
+    def cor_preenchimento(self, nova_cor):
+        self._cor_preenchimento = nova_cor
+        # REPASSA A COR DO PREENCHIMENTO PARA TODAS AS FIGURAS
+        for figura in self.figuras:
+            figura.cor_preenchimento = nova_cor
 
     def desenhar(self, canvas, selecionada=False, rascunho=False):
-        # REPASSA O PADRÃO DE DESENHAR
         for figura in self.figuras:
             figura.desenhar(canvas, selecionada, rascunho)
     
     def mover(self, dx, dy):
-        # MOVE TODAS AS FIGURAS JUNTAS
         for figura in self.figuras:
             figura.mover(dx, dy)
 
     def contem_ponto(self, px, py):
-        # SE CLICAR EM ALGUMA DAS FIGURAS, "CLICA EM TODAS"
         for figura in self.figuras:
             if figura.contem_ponto(px, py):
                 return True
         return False
     
     def esta_dentro(self, x1, y1, x2, y2):
-        # SE TODAS AS PARTES ESTIVEREM DENTRO, AÍ SIM O GRUPO TA DENTRO
         for figura in self.figuras:
             if not figura.esta_dentro(x1, y1, x2, y2):
                 return False
