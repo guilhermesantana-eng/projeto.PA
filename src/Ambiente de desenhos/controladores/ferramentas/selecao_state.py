@@ -17,13 +17,17 @@ class FerramentaSelecao(FerramentaDesenho):
             self.y_anterior = event.y
 
             # Varre as figuras de trás para frente (Z-index: topo primeiro)
-            if not controller.desenho.figuras_selecionadas:
-                for figura in reversed(controller.desenho.figuras):
-                    if figura.contem_ponto(event.x, event.y):
-                        if figura not in controller.desenho.figuras_selecionadas:
-                            controller.desenho.figuras_selecionadas.clear()  # Limpa a seleção anterior
+
+            ha_figura = False
+            for figura in reversed(controller.desenho.figuras):
+                if figura.contem_ponto(event.x, event.y):
+                    if figura not in controller.desenho.figuras_selecionadas:
+                        if not controller.desenho.figuras_selecionadas:
                             controller.desenho.figuras_selecionadas.append(figura)
-                            break
+                        ha_figura = True
+                        break
+            if not ha_figura:
+              controller.desenho.figuras_selecionadas.clear()  # Limpa a seleção anterior
             
             controller.desenhar_tudo()
 
