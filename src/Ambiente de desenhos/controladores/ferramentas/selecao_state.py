@@ -21,11 +21,12 @@ class FerramentaSelecao(FerramentaDesenho):
             ha_figura = False
             for figura in reversed(controller.desenho.figuras):
                 if figura.contem_ponto(event.x, event.y):
+                    ha_figura = True
                     if figura not in controller.desenho.figuras_selecionadas:
                         if not controller.desenho.figuras_selecionadas:
+                            controller.desenho.figuras_selecionadas.clear()
                             controller.desenho.figuras_selecionadas.append(figura)
-                        ha_figura = True
-                        break
+                            break
             if not ha_figura:
               controller.desenho.figuras_selecionadas.clear()  # Limpa a seleção anterior
             
