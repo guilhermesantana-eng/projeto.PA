@@ -7,6 +7,7 @@ from controladores.ferramentas.linha_state import FerramentaLinha
 from controladores.ferramentas.rabisco_state import FerramentaRabisco
 from controladores.ferramentas.poligono_state import FerramentaPoligono
 from controladores.ferramentas.selecao_state import FerramentaSelecao
+from controladores.ferramentas.poligonoRegular_state import FerramentaPoligonoRegular
 from tkinter import filedialog
 import copy
 
@@ -28,6 +29,7 @@ class Controlador:
             "Linha" :  FerramentaLinha(),
             "Rabisco" : FerramentaRabisco(),
             "Polígono" : FerramentaPoligono(),
+            "Poligono Regular" : FerramentaPoligonoRegular(),
             "Seleção" : FerramentaSelecao()
         }
 
@@ -40,6 +42,7 @@ class Controlador:
         self.view.canvas.bind("<Double-Button-1>", self.terminar_poligono)
         self.view.canvas.bind("<Motion>", self.mover_poligono)
         self.view.canvas.bind("<Control-Button-1>", self.selecionar_desenho)
+        self.view.canvas.bind("<Button-3>", self.diminuir_lados)
         # EVENTOS DO TECLADO
         self.view.janela.bind("<Delete>", self.excluir_figura)
         self.view.janela.bind("<Control-c>", self.copiar_figura)
@@ -62,6 +65,9 @@ class Controlador:
         self.ferramenta_atual = self.ferramentas[forma_atual]
         self.ferramenta_atual.iniciar_desenho(self, event)
     
+    def diminuir_lados(self, event):
+        self.ferramenta_atual.diminuir_lados(self, event)
+
     def mover_desenho(self, event):
         self.ferramenta_atual.mover_desenho(self, event)
 

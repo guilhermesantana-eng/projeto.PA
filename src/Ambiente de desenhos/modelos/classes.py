@@ -304,6 +304,81 @@ class Poligono(Figura):
                 return False
         return True
 
+class PoligonoRegular(Figura):
+    def __init__(self, vertices, cor_borda, cor_preenchimento):
+        super().__init__(cor_borda, cor_preenchimento)
+        self.vertices = vertices
+
+    def desenhar(self, canvas, selecionada = False, rascunho = False):
+        cor_borda_atual = "green" if selecionada else self.cor_borda
+        estilo_rascunho = (4,2) if rascunho else None
+
+        canvas.create_polygon(
+            self.vertices,
+            fill = self.cor_preenchimento,
+            outline = cor_borda_atual,
+            dash = estilo_rascunho,
+            width = 5
+        )
+
+    def mover(self, dx, dy):
+        # Percorre os índices modificando X (índices pares) e Y (índices ímpares)
+        for i in range(0, len(self.vertices), 2):
+            self.vertices[i] += dx      # Altera o X
+            self.vertices[i+1] += dy    # Altera o Y
+
+    def contem_ponto(self, px, py):
+        """
+        Versão adaptada do algoritmo do professor para lista linear [x1, y1, x2, y2...].
+        Garante o clique no centro/preenchimento do polígono sem alterar o Modelo.
+        """
+        dentro = False
+        qtd_coordenadas = len(self.pontos)
+        
+        # Como cada ponto ocupa 2 posições (x e y), a quantidade de vértices é total / 2
+        n_vertices = qtd_coordenadas // 2
+
+        # Um polígono válido precisa de pelo menos 3 vértices (6 coordenadas)
+        if n_vertices < 3:
+            return False
+
+        # Inicializa o primeiro vértice (índice 0 e 1) como ponto de partida
+        p1x = self.pontos[0]
+        p1y = self.pontos[1]
+
+        # O laço roda para cada vértice (e faz uma volta extra para fechar o polígono)
+        for i in range(n_vertices + 1):
+            # Descobre o índice real na lista linear usando o resto da divisão (%)
+            # i % n_vertices garante que na última volta ele conecte ao primeiro vértice de novo
+            indice_base = (i % n_vertices) * 2
+            
+            p2x = self.pontos[indice_base]
+            p2y = self.pontos[indice_base + 1]
+
+            # --- Daqui para baixo é a lógica matemática exata do professor ---
+            # Verifica se o raio horizontal intercepta a aresta do polígono
+            if py > min(p1y, p2y):
+                if py <= max(p1y, p2y):
+                    if px <= max(p1x, p2x):
+                        # Calcula a interceptação X exata da aresta
+                        if p1y != p2y:
+                            x_interceptado = (py - p1y) * (p2x - p1x) / (p2y - p1y) + p1x
+                        # Se o ponto estiver à esquerda da interceptação, inverte o estado
+                        if p1x == p2x or px <= x_interceptado:
+                            dentro = not dentro
+
+            # O próximo ponto de partida (p1) passa a ser o ponto de chegada atual (p2)
+            p1x, p1y = p2x, p2y
+
+        return dentro
+    
+    def esta_dentro(self, x1, y1, x2, y2):
+        min_x, max_x = min(x1, x2), max(x1, x2)
+        min_y, max_y = min(y1, y2), max(y1, y2)
+
+        return (min_x <= self.x1 <= max_x and min_y <= self.y1 <= max_y and
+                min_x <= self.x2 <= max_x and min_y <= self.y2 <= max_y)
+
 class FiguraComposta(Figura):
     def __init__(self, figuras):
         self.figuras = figuras
