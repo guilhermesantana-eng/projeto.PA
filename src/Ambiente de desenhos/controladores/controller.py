@@ -1,4 +1,4 @@
-from modelos.classes import Retangulo, Oval, Circulo, Linha, Rabisco
+from modelos.classes import Retangulo, Oval, Circulo, Linha, Rabisco, FiguraComposta
 from view.view import desenhar_figura_na_tela  # <- Importe a função que criamos para desenhar na View
 from controladores.ferramentas.retangulo_state import FerramentaRetangulo
 from controladores.ferramentas.circulo_state import FerramentaCirculo
@@ -8,7 +8,6 @@ from controladores.ferramentas.rabisco_state import FerramentaRabisco
 from controladores.ferramentas.poligono_state import FerramentaPoligono
 from controladores.ferramentas.selecao_state import FerramentaSelecao
 from tkinter import filedialog
-from modelos.classes import Retangulo, Oval, Circulo, Linha, Rabisco, FiguraComposta
 import copy
 
 class Controlador:
