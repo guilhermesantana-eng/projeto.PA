@@ -64,6 +64,8 @@ class FerramentaPoligonoRegular(FerramentaDesenho):
             self.x_centro = None
             self.y_centro = None
             self.vertices = []
+            controller.eh_duplo_clique = False
+            controller.desenho.figura_preview = None
             controller.desenhar_tudo()
     
     def calcular_vertices(self, x_centro, y_centro, raio, lados):

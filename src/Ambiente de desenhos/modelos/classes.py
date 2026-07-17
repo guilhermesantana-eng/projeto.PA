@@ -333,7 +333,7 @@ class PoligonoRegular(Figura):
         Garante o clique no centro/preenchimento do polígono sem alterar o Modelo.
         """
         dentro = False
-        qtd_coordenadas = len(self.pontos)
+        qtd_coordenadas = len(self.vertices)
         
         # Como cada ponto ocupa 2 posições (x e y), a quantidade de vértices é total / 2
         n_vertices = qtd_coordenadas // 2
@@ -343,8 +343,8 @@ class PoligonoRegular(Figura):
             return False
 
         # Inicializa o primeiro vértice (índice 0 e 1) como ponto de partida
-        p1x = self.pontos[0]
-        p1y = self.pontos[1]
+        p1x = self.vertices[0]
+        p1y = self.vertices[1]
 
         # O laço roda para cada vértice (e faz uma volta extra para fechar o polígono)
         for i in range(n_vertices + 1):
@@ -352,8 +352,8 @@ class PoligonoRegular(Figura):
             # i % n_vertices garante que na última volta ele conecte ao primeiro vértice de novo
             indice_base = (i % n_vertices) * 2
             
-            p2x = self.pontos[indice_base]
-            p2y = self.pontos[indice_base + 1]
+            p2x = self.vertices[indice_base]
+            p2y = self.vertices[indice_base + 1]
 
             # --- Daqui para baixo é a lógica matemática exata do professor ---
             # Verifica se o raio horizontal intercepta a aresta do polígono
@@ -376,8 +376,12 @@ class PoligonoRegular(Figura):
         min_x, max_x = min(x1, x2), max(x1, x2)
         min_y, max_y = min(y1, y2), max(y1, y2)
 
-        return (min_x <= self.x1 <= max_x and min_y <= self.y1 <= max_y and
-                min_x <= self.x2 <= max_x and min_y <= self.y2 <= max_y)
+        for i in range(0, len(self.vertices), 2):
+            px = self.vertices[i]
+            py = self.vertices[i + 1]
+            if not (min_x <= px <= max_x and min_y <= py <= max_y):
+                return False
+        return True
 
 class FiguraComposta(Figura):
     def __init__(self, figuras):
